@@ -5,6 +5,7 @@ import AppError from "../utils/AppError.js";
 import { cookieOptions } from "../utils/cookieOptions.js";
 import groupErrors from "../utils/groupValidationErrors.js";
 import sendMail from "../services/sendMail.js";
+import { UserRole } from "../utils/userRole.js";
 
 /**************************************************
  * @SIGNUP
@@ -102,6 +103,29 @@ export const logout = asyncHandler(async (req, res, next) => {
 export const getProfile = asyncHandler(async (req, res, next) => {
     const { user } = req;
     return res.status(200).json({ success: true, data: user });
+});
+
+/**************************************************
+ * @CHANGE_USER_ROLE
+ * @REQUEST_TYPE GET
+ * @route /auth/profile/role
+ * @description route for changing user role from employee to employer
+ * @params none
+ * @return User Object
+ **************************************************/
+export const changeUserRole = asyncHandler(async (req, res, next) => {
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $set: { role: UserRole.EMPLOYER } },
+        { new: true },
+        (error, updatedUser) => {
+            if (error) {
+                return next(new AppError("Failed to update user try again!", 400));
+            }
+            //TODO: remove password field from updatedUser
+            return res.status(200).json({ success: true, data: updatedUser });
+        }
+    );
 });
 
 /**************************************************

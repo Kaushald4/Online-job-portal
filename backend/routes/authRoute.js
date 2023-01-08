@@ -3,6 +3,7 @@ const router = express.Router();
 
 import {
     changePassword,
+    changeUserRole,
     forgotPassword,
     getProfile,
     login,
@@ -25,5 +26,6 @@ router.post("/auth/password/reset", resetPassword);
 
 router.get("/auth/logout", logout);
 router.get("/auth/profile", isLoggedIn, getProfile);
+router.get("/auth/profile/role", isLoggedIn, changeUserRole);
 
 export default router;
