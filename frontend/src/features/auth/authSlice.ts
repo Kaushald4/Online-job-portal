@@ -8,6 +8,7 @@ interface IUser {
         email: string;
         token: string;
         message?: string;
+        role?: string;
     };
 }
 
@@ -43,9 +44,13 @@ const authApi = emptySplitApi.injectEndpoints({
         getUser: build.query<IUser, void>({
             query: () => ({ url: `/auth/profile`, method: "GET", credentials: "include" }),
         }),
+        updateUserRole: build.mutation<IUser, void>({
+            query: () => ({ url: "/auth/profile/role", credentials: "include" }),
+        }),
     }),
     overrideExisting: true,
 });
 
-export const { useSignupMutation, useLoginMutation, useGetUserQuery } = authApi;
+export const { useSignupMutation, useLoginMutation, useGetUserQuery, useUpdateUserRoleMutation } =
+    authApi;
 export default authApi;

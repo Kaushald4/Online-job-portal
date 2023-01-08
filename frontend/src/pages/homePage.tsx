@@ -1,5 +1,6 @@
 import GradientLayout from "../components/GradientLayout";
 import Layout from "../components/Layout";
+import { useGetUserQuery } from "../features/auth/authSlice";
 
 const HomePage = () => {
     return (
