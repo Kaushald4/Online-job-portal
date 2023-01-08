@@ -29,6 +29,7 @@ const authApi = emptySplitApi.injectEndpoints({
                 url: `/auth/signup`,
                 method: "POST",
                 body: authDetails,
+                credentials: "include",
             }),
         }),
         login: build.mutation<IUser, ILoginParams>({
