@@ -1,11 +1,40 @@
 import React from "react";
 import { Card, Label, Checkbox, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import TextInput from "../../components/TextInput";
+import { useGetUserQuery } from "../../features/auth/authSlice";
 
 const LoginPage = () => {
-    const { handleAuthDetailsChange, login, togglePassVisibility, showPassword } = useAuth();
+    const {
+        handleAuthDetailsChange,
+        login,
+        togglePassVisibility,
+        showPassword,
+        loginError,
+        loginDetails,
+        loginLoading,
+        loginResult,
+    } = useAuth();
+
+    const { isLoading, error, data, isFetching } = useGetUserQuery();
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (data?.data.email) {
+        return <Navigate to={"/"} replace />;
+    }
+
+    let errorMessage: any = loginError && "data" in loginError ? loginError.data : "";
+    let emailError = "";
+    let passwordError = "";
+    if (errorMessage.message?.includes("Email")) {
+        emailError = errorMessage.message;
+    } else {
+        passwordError = errorMessage.message;
+    }
 
     return (
         <div className="bg-gray-100 min-h-[100vh] dark:bg-gray-800">
@@ -25,7 +54,10 @@ const LoginPage = () => {
                                 onChange={handleAuthDetailsChange("login")}
                                 type="email"
                                 label="Email"
+                                disabled={loginLoading}
+                                value={loginDetails.email}
                                 labelFor="Email"
+                                errorMessage={emailError}
                                 placeholder="name@example.com"
                                 required={true}
                             />
@@ -36,7 +68,10 @@ const LoginPage = () => {
                                 required={true}
                                 label="Password"
                                 labelFor="Password"
+                                value={loginDetails.password}
+                                disabled={loginLoading}
                                 placeholder="Password"
+                                errorMessage={passwordError}
                                 rightIcon={showPassword ? <p>Hide</p> : <p>Show</p>}
                                 rightIconOnClick={togglePassVisibility}
                             />
@@ -54,7 +89,9 @@ const LoginPage = () => {
                                 <Label htmlFor="remember">Remember me</Label>
                             </div>
 
-                            <Button type="submit">Sign in</Button>
+                            <Button type="submit" disabled={loginLoading}>
+                                Sign in
+                            </Button>
                             <div className="text-center">
                                 <p>OR</p>
                                 <button>Continue with google</button>

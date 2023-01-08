@@ -1,11 +1,32 @@
 import React from "react";
 import { Card, Label, Checkbox, Button } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import TextInput from "../../components/TextInput";
+import { useGetUserQuery } from "../../features/auth/authSlice";
 
 const SignupPage = () => {
-    const { handleAuthDetailsChange, signUp, togglePassVisibility, showPassword } = useAuth();
+    const {
+        handleAuthDetailsChange,
+        signUp,
+        togglePassVisibility,
+        showPassword,
+        isLoading,
+        signupDetails,
+        error,
+    } = useAuth();
+
+    const { isLoading: isProfileLoading, data } = useGetUserQuery();
+
+    if (isProfileLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (data?.data.email) {
+        return <Navigate to={"/"} replace />;
+    }
+
+    let errorMessage: any = error && "data" in error ? (error.data as any) : "";
 
     return (
         <div className="bg-gray-100 min-h-[100vh] dark:bg-gray-800">
@@ -15,7 +36,7 @@ const SignupPage = () => {
                 </div>
                 <div className="max-w-[500px] mx-auto">
                     <Card>
-                        <form className="flex flex-col gap-y-2" onSubmit={signUp} method="POST">
+                        <form className="flex flex-col gap-y-5" onSubmit={signUp} method="POST">
                             <div className="flex gap-x-2">
                                 <TextInput
                                     placeholder="First Name"
@@ -23,17 +44,21 @@ const SignupPage = () => {
                                     label="FirstName"
                                     name="firstName"
                                     labelFor="FirstName"
+                                    value={signupDetails.firstName}
                                     onChange={handleAuthDetailsChange("signup")}
                                     required={true}
+                                    disabled={isLoading}
                                 />
                                 <TextInput
                                     placeholder="Last Name"
                                     type="text"
+                                    value={signupDetails.lastName}
                                     label="LastName"
                                     name="lastName"
                                     labelFor="LastName"
                                     onChange={handleAuthDetailsChange("signup")}
                                     required={true}
+                                    disabled={isLoading}
                                 />
                             </div>
                             <TextInput
@@ -42,19 +67,24 @@ const SignupPage = () => {
                                 type="email"
                                 label="Email"
                                 labelFor="Email"
+                                value={signupDetails.email}
                                 placeholder="name@example.com"
                                 required={true}
+                                errorMessage={errorMessage.message}
+                                disabled={isLoading}
                             />
                             <TextInput
                                 name="password"
                                 onChange={handleAuthDetailsChange("signup")}
                                 type={showPassword ? "text" : "password"}
                                 required={true}
+                                value={signupDetails.password}
                                 label="Password"
                                 labelFor="Password"
                                 placeholder="Password"
                                 rightIcon={showPassword ? <p>Hide</p> : <p>Show</p>}
                                 rightIconOnClick={togglePassVisibility}
+                                disabled={isLoading}
                             />
                             <div className="flex items-center gap-2">
                                 <Checkbox id="remember" />
@@ -69,7 +99,9 @@ const SignupPage = () => {
                                     <span className="font-bold text-blue-700">Cookie Policy.</span>
                                 </p>
                             </div>
-                            <Button type="submit">Join Now</Button>
+                            <Button type="submit" disabled={isLoading}>
+                                Join Now
+                            </Button>
                             <div className="text-center">
                                 <p>OR</p>
                                 <button>Continue with google</button>

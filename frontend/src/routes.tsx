@@ -5,6 +5,7 @@ import LoginPage from "./pages/auth/loginPage";
 import SignUpPage from "./pages/auth/signupPage";
 import ForgotPasswordPage from "./pages/auth/forgotPasswordPage";
 import HomePage from "./pages/homePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const MyRoutes = () => {
     return (
@@ -12,7 +13,14 @@ const MyRoutes = () => {
             <Route path="/auth/login" element={<LoginPage />} />
             <Route path="/auth/signup" element={<SignUpPage />} />
             <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/" element={<HomePage />} />
+            <Route
+                path="/"
+                element={
+                    <ProtectedRoute>
+                        <HomePage />
+                    </ProtectedRoute>
+                }
+            />
         </Routes>
     );
 };
