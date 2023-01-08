@@ -73,7 +73,6 @@ export const login = asyncHandler(async (req, res, next) => {
 
     const token = user.generateJwtToken();
     user.password = undefined;
-
     res.status(200)
         .cookie("token", `Bearer ${token}`, cookieOptions)
         .json({ success: true, data: { ...user._doc, token } });
