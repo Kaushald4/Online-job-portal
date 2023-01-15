@@ -1,6 +1,6 @@
 import { emptySplitApi } from "../baseApiSlice";
 
-interface IUser {
+export interface IUser {
     success: boolean;
     data: {
         firstName: string;

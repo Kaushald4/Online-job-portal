@@ -10,7 +10,7 @@ const useCreateJob = () => {
         updateUserRole()
             .unwrap()
             .then(() => {
-                navigate("/jobs/create");
+                navigate("/job/create");
             });
     };
 

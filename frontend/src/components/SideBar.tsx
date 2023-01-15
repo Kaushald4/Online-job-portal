@@ -26,7 +26,7 @@ const SideBar = () => {
             if (role === "EMPLOYEE") {
                 setShowJoinModal(true);
             } else {
-                navigate("/jobs/create");
+                navigate("/job/create");
             }
         }
     };
@@ -72,7 +72,7 @@ const SideBar = () => {
                         />
                         {data?.data.role === "EMPLOYER" && (
                             <SideBarItem
-                                to={"/manage-orginazation"}
+                                to={"/orginazation"}
                                 title="Your Orginazation"
                                 icon={<HiOutlineUserGroup className="h-full w-full" />}
                             />

@@ -1,7 +1,15 @@
-import React from "react";
+import CoverPhoto from "../components/CoverPhoto";
+import GradientLayout from "../components/GradientLayout";
+import Layout from "../components/Layout";
 
 const CreateJobPage = () => {
-    return <div>CreateJobPage</div>;
+    return (
+        <GradientLayout>
+            <Layout>
+                <CoverPhoto />
+            </Layout>
+        </GradientLayout>
+    );
 };
 
 export default CreateJobPage;

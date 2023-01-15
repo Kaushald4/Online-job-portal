@@ -6,6 +6,8 @@ import SignUpPage from "./pages/auth/signupPage";
 import ForgotPasswordPage from "./pages/auth/forgotPasswordPage";
 import HomePage from "./pages/homePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OrginazationPage from "./pages/OrginazationPage";
+import CreateJobPage from "./pages/CreateJobPage";
 
 const MyRoutes = () => {
     return (
@@ -18,6 +20,22 @@ const MyRoutes = () => {
                 element={
                     <ProtectedRoute>
                         <HomePage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/orginazation"
+                element={
+                    <ProtectedRoute>
+                        <OrginazationPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/job/create"
+                element={
+                    <ProtectedRoute>
+                        <CreateJobPage />
                     </ProtectedRoute>
                 }
             />
