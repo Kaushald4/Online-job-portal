@@ -4,6 +4,7 @@ import JWT from "jsonwebtoken";
 import crypto from "crypto";
 import { UserRole } from "../utils/userRole.js";
 import { config } from "../config/index.js";
+const { ObjectId } = mongoose.Schema.Types;
 
 const UserSchema = new mongoose.Schema(
     {
@@ -38,6 +39,10 @@ const UserSchema = new mongoose.Schema(
             type: String,
             enum: Object.values(UserRole),
             default: UserRole.EMPLOYEE,
+        },
+        orginazationId: {
+            type: ObjectId,
+            ref: "Orginazation",
         },
         forgotPasswordToken: String,
         forgotPasswordExpDate: Date,

@@ -3,5 +3,6 @@ export const errorHandler = (error, req, res, next) => {
         success: false,
         message: error.message,
         stack: error.stack,
+        error,
     });
 };

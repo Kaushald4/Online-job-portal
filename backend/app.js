@@ -24,9 +24,11 @@ app.set("view engine", "ejs");
 
 //routes import
 import authRoute from "./routes/authRoute.js";
+import orginazationRoute from "./routes/orginazationRoute.js";
 
 //routes middleware
 app.use("/api/v1/", authRoute);
+app.use("/api/v1/", orginazationRoute);
 
 // global error handler
 app.use(errorHandler);

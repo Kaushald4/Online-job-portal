@@ -3,6 +3,7 @@ import { config } from "./index.js";
 
 export const connectDB = async () => {
     try {
+        mongoose.set("strictQuery", false);
         const ref = await mongoose.connect(config.DB_URL, { dbName: "jobportal" });
         console.log(`DB Connected ${ref.connection.db.namespace}`);
     } catch (error) {
