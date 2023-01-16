@@ -47,7 +47,7 @@ export const createOrginazation = asyncHandler(async (req, res, next) => {
  * @params none
  * @return list of Orginazation Object
  **************************************************/
-export const getMyOrginazation = asyncHandler(async (req, res, next) => {
+export const getMyOrginazations = asyncHandler(async (req, res, next) => {
     const orginazations = await Orginazation.find({ author: req.user._id });
 
     if (orginazations.length === 0) {
@@ -55,4 +55,22 @@ export const getMyOrginazation = asyncHandler(async (req, res, next) => {
     }
 
     return res.status(200).json({ success: true, data: orginazations });
+});
+
+/**************************************************
+ * @GET_ORGINAZATION
+ * @REQUEST_TYPE GET
+ * @route /orginazation/:orginazationID
+ * @description route for returning all organazations created by current user
+ * @params orginazationID
+ * @return Orginazation Object
+ **************************************************/
+export const getOrginazation = asyncHandler(async (req, res, next) => {
+    const orginazation = await Orginazation.findOne({ _id: req.params.orginazationID });
+
+    if (!orginazation) {
+        return res.status(404).json({ success: false, message: "No Orginazation found" });
+    }
+
+    return res.status(200).json({ success: true, data: orginazation });
 });
