@@ -47,7 +47,7 @@ export const createOrginazation = asyncHandler(async (req, res, next) => {
  * @params none
  * @return list of Orginazation Object
  **************************************************/
-export const getOrginazation = asyncHandler(async (req, res, next) => {
+export const getMyOrginazation = asyncHandler(async (req, res, next) => {
     const orginazations = await Orginazation.find({ author: req.user._id });
 
     if (orginazations.length === 0) {
