@@ -4,7 +4,7 @@ const router = express.Router();
 const upload = multer();
 
 import isLoggedIn from "../middleware/isLoggedIn.js";
-import { createOrginazation } from "../controllers/orginazationController.js";
+import { createOrginazation, getOrginazation } from "../controllers/orginazationController.js";
 
 router.post(
     "/orginazation",
@@ -15,5 +15,6 @@ router.post(
     ]),
     createOrginazation
 );
+router.get("/orginazation", isLoggedIn, getOrginazation);
 
 export default router;

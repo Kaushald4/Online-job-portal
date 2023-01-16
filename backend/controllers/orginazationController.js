@@ -38,3 +38,21 @@ export const createOrginazation = asyncHandler(async (req, res, next) => {
 
     res.status(201).json({ success: true, data: orginazation });
 });
+
+/**************************************************
+ * @GET_AUTHENTICATED_USER_ORGINAZATION
+ * @REQUEST_TYPE GET
+ * @route /orginazation
+ * @description route for returning all organazations created by current user
+ * @params none
+ * @return list of Orginazation Object
+ **************************************************/
+export const getOrginazation = asyncHandler(async (req, res, next) => {
+    const orginazations = await Orginazation.find({ author: req.user._id });
+
+    if (orginazations.length === 0) {
+        return res.status(200).json({ success: false, message: "No Orginazations" });
+    }
+
+    return res.status(200).json({ success: true, data: orginazations });
+});
