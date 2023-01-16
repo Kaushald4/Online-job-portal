@@ -26,9 +26,9 @@ const OrginazationSchema = new mongoose.Schema(
         about: {
             type: String,
             trim: true,
-            maxLength: [500, "About field can not be more than 500 chars long"],
+            maxLength: [1000, "About field can not be more than 500 chars long"],
         },
-        headling: {
+        headline: {
             type: String,
             trim: true,
             maxLength: [250, "Headline can not be more than 250 chars"],
