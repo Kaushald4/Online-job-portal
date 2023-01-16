@@ -1,5 +1,8 @@
 import { ChangeEvent, useState } from "react";
-import { useCreateOrginazationMutation } from "../features/orginazation/orginazationSilce";
+import {
+    useCreateOrginazationMutation,
+    useGetMyOrginazationQuery,
+} from "../features/orginazation/orginazationSilce";
 
 interface ILocation {
     country: string;
@@ -39,12 +42,18 @@ const useOrginazation = () => {
         },
     });
 
+    // orginazation feature slice
     const [createOrgz, orgzStatus] = useCreateOrginazationMutation();
+    const {
+        isLoading: isMyOrginazationLoading,
+        data: myOrganization,
+        refetch,
+    } = useGetMyOrginazationQuery();
 
+    // helper function for hiding & displaying modal
     const handleShowOrz = (action: "show" | "close") => {
         setShowCreateOrginzationModal(action === "show" ? true : false);
     };
-
     // handler for file input
     const handleOrginazationFile = (e: ChangeEvent<HTMLInputElement>) => {
         const previewUrl = URL.createObjectURL(e.target.files!![0]);
@@ -96,7 +105,10 @@ const useOrginazation = () => {
 
     const createOrginazation = () => {
         const data = createFormData();
-        createOrgz(data);
+        createOrgz(data).then((data) => {
+            setShowCreateOrginzationModal(false);
+            refetch();
+        });
     };
 
     return {
@@ -108,6 +120,8 @@ const useOrginazation = () => {
         createOrginazation,
         handleOrginazationLocation,
         orgzStatus,
+        isMyOrginazationLoading,
+        myOrganization,
     };
 };
 

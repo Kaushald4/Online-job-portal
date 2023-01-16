@@ -1,11 +1,13 @@
 import { emptySplitApi } from "../baseApiSlice";
 
-interface IOrginazation {
+export interface IOrginazation {
     success: boolean;
+    message?: string;
     data: {
+        _id: string;
         name: string;
         orginazationType: string;
-        heading: string;
+        headline: string;
         location: {
             country: string;
             state: string;
@@ -25,26 +27,33 @@ interface IOrginazation {
     };
 }
 
-interface IOrginazationParams {
-    name: string;
-    orginazationType: string;
-    heading: string;
-    location: {
-        country: string;
-        state: string;
-        city: string;
-    };
-    website: string;
-    about: string;
-    coverPhoto: {
-        secureUrl: string;
-        photoId: string;
-    };
-    photo: {
-        secureUrl: string;
-        photoId: string;
-    };
-    author?: any;
+export interface IOrginazations {
+    success: boolean;
+    message?: string;
+    data: [
+        {
+            _id: string;
+            name: string;
+            orginazationType: string;
+            headline: string;
+            location: {
+                country: string;
+                state: string;
+                city: string;
+            };
+            website: string;
+            about: string;
+            coverPhoto: {
+                secureUrl: string;
+                photoId: string;
+            };
+            photo: {
+                secureUrl: string;
+                photoId: string;
+            };
+            author?: any;
+        }
+    ];
 }
 
 const orginazationApi = emptySplitApi.injectEndpoints({
@@ -57,9 +66,16 @@ const orginazationApi = emptySplitApi.injectEndpoints({
                 credentials: "include",
             }),
         }),
+        getMyOrginazation: build.query<IOrginazations, void>({
+            query: () => ({
+                url: "/orginazation",
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
     }),
     overrideExisting: true,
 });
 
-export const { useCreateOrginazationMutation } = orginazationApi;
+export const { useCreateOrginazationMutation, useGetMyOrginazationQuery } = orginazationApi;
 export default orginazationApi;

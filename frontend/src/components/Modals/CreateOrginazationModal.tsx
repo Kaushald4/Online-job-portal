@@ -147,14 +147,6 @@ const CreateOrginazationModal = ({
                                     onChange={handleOrginazationDetails}
                                     disabled={orgzStatus.isLoading}
                                 />
-                                <TextInput
-                                    label="Orgination Type"
-                                    placeholder="software development"
-                                    name="orginazationType"
-                                    value={orginazationDetails.orginazationType}
-                                    onChange={handleOrginazationDetails}
-                                    disabled={orgzStatus.isLoading}
-                                />
 
                                 <TextInput
                                     label="Orgination Website"

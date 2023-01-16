@@ -1,10 +1,12 @@
-import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
 import Button from "../components/Button";
+import { OrginazationCard } from "../components/Cards/OrginazationCard";
 import GradientLayout from "../components/GradientLayout";
 import Layout from "../components/Layout";
+import LoadingIndicator from "../components/LoadingIndicator";
 import CreateOrginazationModal from "../components/Modals/CreateOrginazationModal";
+import { useGetMyOrginazationQuery } from "../features/orginazation/orginazationSilce";
 import useOrginazation from "../hooks/useOrginazation";
 
 const OrginazationPage = () => {
@@ -17,6 +19,8 @@ const OrginazationPage = () => {
         createOrginazation,
         handleOrginazationLocation,
         orgzStatus,
+        isMyOrginazationLoading,
+        myOrganization,
     } = useOrginazation();
 
     return (
@@ -34,6 +38,30 @@ const OrginazationPage = () => {
                         </Button>
                     </div>
                 </div>
+
+                {/* //orginazations list */}
+                <div className="flex items-center flex-wrap gap-4 justify-center mt-5">
+                    {isMyOrginazationLoading ? (
+                        <LoadingIndicator />
+                    ) : (
+                        <>
+                            {myOrganization?.success ? (
+                                myOrganization?.data.map((orginazation) => {
+                                    return (
+                                        <OrginazationCard
+                                            key={orginazation._id}
+                                            data={orginazation}
+                                            success={myOrganization!!.success}
+                                        />
+                                    );
+                                })
+                            ) : (
+                                <p>{myOrganization?.message}</p>
+                            )}
+                        </>
+                    )}
+                </div>
+
                 <CreateOrginazationModal
                     showModal={showCreateModal}
                     handleShowModal={handleShowOrz}
