@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { IOrginazation } from "../../features/orginazation/orginazationSilce";
 import Button from "../Button";
 
@@ -7,6 +8,7 @@ interface Props extends IOrginazation {}
 export const OrginazationCard = (props: IOrginazation) => {
     const {
         about,
+        _id,
         coverPhoto,
         headline,
         location,
@@ -17,10 +19,13 @@ export const OrginazationCard = (props: IOrginazation) => {
         author,
     } = props.data;
 
-    console.log(props.data);
+    const navigate = useNavigate();
 
     return (
-        <div className="relative flex flex-col justify-between pb-5 w-[400px] min-h-[250px] bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+        <div
+            onClick={() => navigate(`/orginazation/${_id}`)}
+            className="relative flex flex-col justify-between pb-5 w-[400px] min-h-[250px] bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700"
+        >
             <div>
                 <div className="w-full h-[80px]">
                     <img

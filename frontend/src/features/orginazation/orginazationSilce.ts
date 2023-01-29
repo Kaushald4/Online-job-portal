@@ -56,6 +56,10 @@ export interface IOrginazations {
     ];
 }
 
+interface IOrginazationQueryParam {
+    orginazationID: string;
+}
+
 const orginazationApi = emptySplitApi.injectEndpoints({
     endpoints: (build) => ({
         createOrginazation: build.mutation<IOrginazation, FormData>({
@@ -66,9 +70,16 @@ const orginazationApi = emptySplitApi.injectEndpoints({
                 credentials: "include",
             }),
         }),
-        getMyOrginazation: build.query<IOrginazations, void>({
+        getMyOrginazations: build.query<IOrginazations, void>({
             query: () => ({
                 url: "/orginazation",
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
+        getOrginazation: build.query<IOrginazation, IOrginazationQueryParam>({
+            query: ({ orginazationID }) => ({
+                url: `/orginazation/${orginazationID}`,
                 method: "GET",
                 credentials: "include",
             }),
@@ -77,5 +88,9 @@ const orginazationApi = emptySplitApi.injectEndpoints({
     overrideExisting: true,
 });
 
-export const { useCreateOrginazationMutation, useGetMyOrginazationQuery } = orginazationApi;
+export const {
+    useCreateOrginazationMutation,
+    useGetMyOrginazationsQuery,
+    useGetOrginazationQuery,
+} = orginazationApi;
 export default orginazationApi;

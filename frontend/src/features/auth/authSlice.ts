@@ -2,13 +2,21 @@ import { emptySplitApi } from "../baseApiSlice";
 
 export interface IUser {
     success: boolean;
+    message?: string;
     data: {
         firstName: string;
         lastName: string;
         email: string;
         token: string;
-        message?: string;
         role?: string;
+        profilePhoto: {
+            secureUrl: string;
+            photoID: string;
+        };
+        coverPhoto: {
+            secureUrl: string;
+            photoID: string;
+        }
     };
 }
 

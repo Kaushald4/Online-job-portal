@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import {
     useCreateOrginazationMutation,
-    useGetMyOrginazationQuery,
+    useGetMyOrginazationsQuery,
 } from "../features/orginazation/orginazationSilce";
 
 interface ILocation {
@@ -48,7 +48,7 @@ const useOrginazation = () => {
         isLoading: isMyOrginazationLoading,
         data: myOrganization,
         refetch,
-    } = useGetMyOrginazationQuery();
+    } = useGetMyOrginazationsQuery();
 
     // helper function for hiding & displaying modal
     const handleShowOrz = (action: "show" | "close") => {
