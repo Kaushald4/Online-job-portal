@@ -1,22 +1,38 @@
-import React from "react";
 import CoverPhoto from "../components/CoverPhoto";
 import GradientLayout from "../components/GradientLayout";
 import Layout from "../components/Layout";
-import { useGetUserQuery } from "../features/auth/authSlice";
+import useModal from "../hooks/useModal";
+import useProfile from "../hooks/useProfile";
 
 const ProfilePage = () => {
-  const { data } = useGetUserQuery();
+  const {
+    user,
+    handleProfileChnage,
+    updateProfile,
+    handleProfileFile,
+    error,
+    isLoading,
+  } = useProfile();
+  const { showModal, renderEditProfileModal } = useModal();
 
   return (
     <GradientLayout>
       <Layout>
         <CoverPhoto
-          name={`${data?.data.firstName} ${data?.data.lastName}`}
-          headline={data?.data.email}
-          photoUrl={data?.data?.profilePhoto?.secureUrl}
-          coverUrl={data?.data?.coverPhoto?.secureUrl}
+          name={`${user?.firstName} ${user?.lastName}`}
+          headline={user?.email}
+          photoUrl={user?.profilePhoto?.secureUrl}
+          coverUrl={user?.coverPhoto?.secureUrl}
           profile
+          onEditClick={() => showModal("EditProfile")}
         />
+
+        {renderEditProfileModal(
+          user,
+          handleProfileChnage,
+          updateProfile,
+          handleProfileFile
+        )}
       </Layout>
     </GradientLayout>
   );

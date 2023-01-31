@@ -14,11 +14,20 @@ interface Props {
   headline?: string;
   companyType?: string;
   profile?: boolean;
+  onEditClick?: () => void;
 }
 
 const CoverPhoto = (props: Props) => {
-  const { photoUrl, coverUrl, headline, location, name, companyType, profile } =
-    props;
+  const {
+    photoUrl,
+    coverUrl,
+    headline,
+    location,
+    name,
+    companyType,
+    profile,
+    onEditClick,
+  } = props;
 
   return (
     <div className="w-full h-[350px]">
@@ -51,7 +60,13 @@ const CoverPhoto = (props: Props) => {
                 </p>
               </div>
               {/* edit profile button */}
-              <div>{profile && <Button outline>Edit Profile</Button>}</div>
+              <div>
+                {profile && (
+                  <Button onClick={onEditClick} outline>
+                    Edit Profile
+                  </Button>
+                )}
+              </div>
             </div>
             <p className="text-[14px] dark:text-gray-500">{companyType}</p>
             <p className="text-black text-[15px] ml-2 dark:text-gray-200">

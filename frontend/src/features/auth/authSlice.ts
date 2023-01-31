@@ -8,6 +8,7 @@ export interface IUser {
         lastName: string;
         email: string;
         token: string;
+        phoneNumber: string;
         role?: string;
         profilePhoto: {
             secureUrl: string;
