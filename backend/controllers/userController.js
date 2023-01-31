@@ -21,8 +21,8 @@ export const updateUser = asyncHandler(async (req, res, next) => {
       req.files["cover"][0],
       "jobportal_profile"
     );
-    profilePhoto["secureUrl"] = coverUrl;
-    profilePhoto["photoID"] = coverId;
+    coverPhoto["secureUrl"] = coverUrl;
+    coverPhoto["photoID"] = coverId;
   }
 
   if (req.files["photo"]) {
@@ -30,8 +30,8 @@ export const updateUser = asyncHandler(async (req, res, next) => {
       req.files["photo"][0],
       "jobportal_profile"
     );
-    coverPhoto["secureUrl"] = photoUrl;
-    coverPhoto["photoID"] = photoId;
+    profilePhoto["secureUrl"] = photoUrl;
+    profilePhoto["photoID"] = photoId;
   }
 
   for (let key in req.body) {
