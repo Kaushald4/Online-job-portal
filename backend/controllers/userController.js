@@ -40,6 +40,14 @@ export const updateUser = asyncHandler(async (req, res, next) => {
     }
   }
 
+  if (Object.keys(profilePhoto).length >= 1) {
+    update["profilePhoto"] = profilePhoto;
+  }
+
+  if (Object.keys(coverPhoto).length >= 1) {
+    update["coverPhoto"] = coverPhoto;
+  }
+
   User.findByIdAndUpdate(
     { _id: req.user._id },
     { $set: update },
