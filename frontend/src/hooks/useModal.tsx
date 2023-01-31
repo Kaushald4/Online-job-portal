@@ -21,7 +21,8 @@ const useModal = () => {
     user: IUser,
     handleProfileChnage: (e: ChangeEvent<HTMLInputElement>) => void,
     updateProfile: Function,
-    handleProfileFile: (e: ChangeEvent<HTMLInputElement>) => void
+    handleProfileFile: (e: ChangeEvent<HTMLInputElement>) => void,
+    userDataStatus: any
   ) => (
     <EditProfileModal
       user={user}
@@ -30,6 +31,7 @@ const useModal = () => {
       handleProfileChnage={handleProfileChnage}
       updateProfile={updateProfile}
       handleProfileFile={handleProfileFile}
+      userDataStatus={userDataStatus}
     />
   );
 
@@ -40,8 +42,6 @@ const useModal = () => {
         break;
       case "EditProfile":
         setShowProfileModal(true);
-        break;
-      default:
         break;
     }
   };

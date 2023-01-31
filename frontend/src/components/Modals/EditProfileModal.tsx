@@ -11,6 +11,7 @@ interface Props {
   handleProfileChnage: (e: ChangeEvent<HTMLInputElement>) => void;
   updateProfile: Function;
   handleProfileFile: (e: ChangeEvent<HTMLInputElement>) => void;
+  userDataStatus: any;
 }
 
 const EditProfileModal = ({
@@ -20,6 +21,7 @@ const EditProfileModal = ({
   handleProfileChnage,
   updateProfile,
   handleProfileFile,
+  userDataStatus,
 }: Props) => {
   const { renderChangePassModal, showModal } = useModal();
 
@@ -65,6 +67,7 @@ const EditProfileModal = ({
                 value={user.firstName}
                 onChange={handleProfileChnage}
                 labelFor="FirstName"
+                disabled={userDataStatus.isLoading}
               />
               <TextInput
                 placeholder={user.lastName}
@@ -73,6 +76,7 @@ const EditProfileModal = ({
                 labelFor="LastName"
                 value={user.lastName}
                 onChange={handleProfileChnage}
+                disabled={userDataStatus.isLoading}
               />
               <TextInput
                 placeholder={user.email}
@@ -81,6 +85,7 @@ const EditProfileModal = ({
                 labelFor="Email"
                 value={user.email}
                 onChange={handleProfileChnage}
+                disabled={userDataStatus.isLoading}
               />
               <TextInput
                 placeholder={user.phoneNumber}
@@ -89,9 +94,14 @@ const EditProfileModal = ({
                 name="phoneNumber"
                 value={user.phoneNumber}
                 onChange={handleProfileChnage}
+                disabled={userDataStatus.isLoading}
               />
               <div className="w-[200px]">
-                <Button onClick={() => showModal("EditPassword")} outline>
+                <Button
+                  disabled={userDataStatus.isLoading}
+                  onClick={() => showModal("EditPassword")}
+                  outline
+                >
                   Change Password
                 </Button>
               </div>
@@ -122,6 +132,7 @@ const EditProfileModal = ({
                 Profile Photo
               </label>
               <input
+                disabled={userDataStatus.isLoading}
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 id="file_input"
                 name="profilePhoto"
@@ -156,14 +167,25 @@ const EditProfileModal = ({
                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 id="file_input"
                 type="file"
+                disabled={userDataStatus.isLoading}
                 name="coverPhoto"
                 onChange={handleProfileFile}
               />
             </div>
             {/* Modal footer */}
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-              <Button onClick={() => updateProfile()}>Save</Button>
-              <Button onClick={close} outline>
+              <Button
+                disabled={userDataStatus.isLoading}
+                isLoading={userDataStatus.isLoading}
+                onClick={() => updateProfile(close)}
+              >
+                Save
+              </Button>
+              <Button
+                disabled={userDataStatus.isLoading}
+                onClick={close}
+                outline
+              >
                 Decline
               </Button>
             </div>

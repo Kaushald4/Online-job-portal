@@ -1,5 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useGetUserQuery } from "../features/auth/authSlice";
+import {
+  useUpdateUserPasswordMutation,
+  useUpdateUserProfileMutation,
+} from "../features/user/userSlice";
 
 export interface IUser {
   firstName: string;
@@ -24,7 +28,10 @@ export interface IUser {
 }
 
 const useProfile = () => {
-  const { data, isLoading, error } = useGetUserQuery();
+  const { data, isLoading, error, refetch } = useGetUserQuery();
+  const [updateUserData, userDataStatus] = useUpdateUserProfileMutation();
+  const [updateUserPassword, userPasswordDataStatus] =
+    useUpdateUserPasswordMutation();
   const [user, setUser] = useState<IUser>({
     email: "",
     firstName: "",
@@ -65,7 +72,7 @@ const useProfile = () => {
         },
       });
     }
-  }, []);
+  }, [data]);
 
   const handleProfileChnage = (e: ChangeEvent<HTMLInputElement>) => {
     setUser((prevState) => {
@@ -113,8 +120,20 @@ const useProfile = () => {
   };
 
   // function responsible for making api call using action slice
-  const updateProfile = () => {
-    console.log(user);
+  const updateProfile = (closeProfileEditModal: Function) => {
+    const formData = new FormData();
+
+    formData.append("firstName", user.firstName);
+    formData.append("lastName", user.lastName);
+    formData.append("email", user.email);
+    formData.append("phoneNumber", user.phoneNumber);
+    formData.append("photo", user.profilePhoto.File);
+    formData.append("cover", user.coverPhoto.File);
+
+    updateUserData(formData).then((res) => {
+      refetch();
+      closeProfileEditModal();
+    });
   };
 
   return {
@@ -124,6 +143,7 @@ const useProfile = () => {
     error,
     handleProfileChnage,
     handleProfileFile,
+    userDataStatus,
   };
 };
 

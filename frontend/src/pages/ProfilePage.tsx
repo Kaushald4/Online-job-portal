@@ -10,6 +10,7 @@ const ProfilePage = () => {
     handleProfileChnage,
     updateProfile,
     handleProfileFile,
+    userDataStatus,
     error,
     isLoading,
   } = useProfile();
@@ -31,7 +32,8 @@ const ProfilePage = () => {
           user,
           handleProfileChnage,
           updateProfile,
-          handleProfileFile
+          handleProfileFile,
+          userDataStatus
         )}
       </Layout>
     </GradientLayout>
