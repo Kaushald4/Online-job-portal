@@ -25,10 +25,12 @@ app.set("view engine", "ejs");
 //routes import
 import authRoute from "./routes/authRoute.js";
 import orginazationRoute from "./routes/orginazationRoute.js";
+import userRoute from "./routes/userRoute.js";
 
 //routes middleware
 app.use("/api/v1/", authRoute);
 app.use("/api/v1/", orginazationRoute);
+app.use("/api/v1/", userRoute);
 
 // global error handler
 app.use(errorHandler);

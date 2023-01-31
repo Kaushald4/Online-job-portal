@@ -24,6 +24,14 @@ const UserSchema = new mongoose.Schema(
             required: [true, "Email is required!"],
             unique: true,
         },
+        profilePhoto: {
+            secureUrl: String,
+            photoID: String,
+        },
+        coverPhoto: {
+            secureUrl: String,
+            photoID: String,
+        },
         phoneNo: {
             type: String,
             trim: true,
