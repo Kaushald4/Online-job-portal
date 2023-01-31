@@ -1,4 +1,4 @@
-import User from '../models/User.js'
+import User from "../models/User.js";
 import asyncHandler from "../utils/catchAsync.js";
 import AppError from "../utils/AppError.js";
 import { uploadImage } from "../utils/imageUpload.js";
@@ -12,39 +12,79 @@ import { uploadImage } from "../utils/imageUpload.js";
  * @return User Object
  **************************************************/
 export const updateUser = asyncHandler(async (req, res, next) => {
-    const profilePhoto = {}
-    const coverPhoto = {}
-    const update = {}
+  const profilePhoto = {};
+  const coverPhoto = {};
+  const update = {};
 
-    if(req.files['cover']) {
-        const { secure_url: coverUrl, public_id: coverId } = await uploadImage(
-            req.files["cover"][0],
-            "jobportal_profile"
-        );
-        profilePhoto['secureUrl'] = coverUrl
-        profilePhoto['photoID'] = coverId
+  if (req.files["cover"]) {
+    const { secure_url: coverUrl, public_id: coverId } = await uploadImage(
+      req.files["cover"][0],
+      "jobportal_profile"
+    );
+    profilePhoto["secureUrl"] = coverUrl;
+    profilePhoto["photoID"] = coverId;
+  }
+
+  if (req.files["photo"]) {
+    const { secure_url: photoUrl, public_id: photoId } = await uploadImage(
+      req.files["photo"][0],
+      "jobportal_profile"
+    );
+    coverPhoto["secureUrl"] = photoUrl;
+    coverPhoto["photoID"] = photoId;
+  }
+
+  for (let key in req.body) {
+    if (key !== "password") {
+      update[key] = req.body[key];
     }
+  }
 
-    if(req.files['photo']) {
-        const { secure_url: photoUrl, public_id: photoId } = await uploadImage(
-            req.files["photo"][0],
-            "jobportal_profile"
-        );
-        coverPhoto['secureUrl'] = photoUrl
-        coverPhoto['photoID'] = photoId
+  User.findByIdAndUpdate(
+    { _id: req.user._id },
+    { $set: update },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        return next(new AppError("Something went wrong try again!", 409));
+      }
+      res.status(201).json({ success: true, data: updatedUser });
     }
+  );
+});
 
-    for(let key in req.body) {
-        if(key !== 'password') {
-            update[key] = req.body[key]
-        }
+/**************************************************
+ * @UPDATE_USER_PASSWORD
+ * @REQUEST_TYPE PATCH
+ * @route /user/update
+ * @description route for updating user info
+ * @params {password}
+ * @return User Object
+ **************************************************/
+export const updateUserPassword = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user, _id);
+
+  const update = {
+    password: req.body.password,
+  };
+
+  const isPassValid = await user.comparePassword(update.password);
+
+  if (!isPassValid) {
+    return next(new AppError("Invalid Password", 401));
+  }
+
+  User.findByIdAndUpdate(
+    { _id: req.user._id },
+    { $set: update },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        return next(new AppError("Something went wrong try again!", 409));
+      }
+      res
+        .status(201)
+        .json({ success: true, message: "Password updated successfully" });
     }
-
-    User.findByIdAndUpdate({_id: req.user._id}, {$set: update}, {new: true}, (err, updatedUser) => {
-        if(err) {
-            return next(new AppError("Something went wrong try again!", 409));
-        }
-        res.status( 201).json({ success: true, data: updatedUser });
-    })
-
+  );
 });
