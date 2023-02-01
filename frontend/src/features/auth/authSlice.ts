@@ -41,6 +41,7 @@ const authApi = emptySplitApi.injectEndpoints({
                 body: authDetails,
                 credentials: "include",
             }),
+            invalidatesTags: ["Auth"],
         }),
         login: build.mutation<IUser, ILoginParams>({
             query: (authDetails) => ({
@@ -49,6 +50,7 @@ const authApi = emptySplitApi.injectEndpoints({
                 body: authDetails,
                 credentials: "include",
             }),
+            invalidatesTags: ["Auth"],
         }),
         logout: build.mutation<string, void>({
             query: () => ({
