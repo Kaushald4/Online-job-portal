@@ -88,7 +88,7 @@ export const login = asyncHandler(async (req, res, next) => {
  * @return success message
  **************************************************/
 export const logout = asyncHandler(async (req, res, next) => {
-    res.clearCookie();
+    res.clearCookie("token");
     res.status(200).json({ success: true, message: "Logged out successfully" });
 });
 
@@ -120,7 +120,9 @@ export const changeUserRole = asyncHandler(async (req, res, next) => {
         { new: true },
         (error, updatedUser) => {
             if (error) {
-                return next(new AppError("Failed to update user try again!", 400));
+                return next(
+                    new AppError("Failed to update user try again!", 400)
+                );
             }
             //TODO: remove password field from updatedUser
             return res.status(200).json({ success: true, data: updatedUser });
@@ -149,11 +151,15 @@ export const changePassword = asyncHandler(async (req, res, next) => {
 
     const isPrevPassValid = await user.comparePassword(prevPassword);
     if (!isPrevPassValid) {
-        return res.status(400).json({ success: false, message: "Previous Password is Invalid!" });
+        return res
+            .status(400)
+            .json({ success: false, message: "Previous Password is Invalid!" });
     }
 
     if (newPassword !== confirmNewPassword) {
-        return res.status(400).json({ success: false, message: "password doses not match" });
+        return res
+            .status(400)
+            .json({ success: false, message: "password doses not match" });
     }
 
     user.password = newPassword;
@@ -195,7 +201,9 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
 
     const forgotPassToken = user.generateForgotPasswordToken();
 
-    const url = `${req.protocol}://${req.get("host")}/api/v1/password/forgot/${forgotPassToken}`;
+    const url = `${req.protocol}://${req.get(
+        "host"
+    )}/api/v1/password/forgot/${forgotPassToken}`;
 
     await sendMail(user.email, "Password reset Link", url);
 
