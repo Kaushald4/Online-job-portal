@@ -63,12 +63,14 @@ const authApi = emptySplitApi.injectEndpoints({
                 method: "GET",
                 credentials: "include",
             }),
+            providesTags: ["Auth"],
         }),
         updateUserRole: build.mutation<IUser, void>({
             query: () => ({
                 url: "/auth/profile/role",
                 credentials: "include",
             }),
+            invalidatesTags: ["Auth"],
         }),
     }),
     overrideExisting: true,
