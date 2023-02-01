@@ -18,7 +18,7 @@ export interface IUser {
         coverPhoto: {
             secureUrl: string;
             photoID: string;
-        }
+        };
     };
 }
 
@@ -44,13 +44,10 @@ const userApi = emptySplitApi.injectEndpoints({
                 credentials: "include",
             }),
         }),
-      
     }),
     overrideExisting: true,
 });
 
-export const {
-   useUpdateUserProfileMutation,
-   useUpdateUserPasswordMutation
-} = userApi;
+export const { useUpdateUserProfileMutation, useUpdateUserPasswordMutation } =
+    userApi;
 export default userApi;

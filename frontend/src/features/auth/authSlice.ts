@@ -17,7 +17,7 @@ export interface IUser {
         coverPhoto: {
             secureUrl: string;
             photoID: string;
-        }
+        };
     };
 }
 
@@ -50,16 +50,35 @@ const authApi = emptySplitApi.injectEndpoints({
                 credentials: "include",
             }),
         }),
+        logout: build.mutation<string, void>({
+            query: () => ({
+                url: `/auth/logout`,
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
         getUser: build.query<IUser, void>({
-            query: () => ({ url: `/auth/profile`, method: "GET", credentials: "include" }),
+            query: () => ({
+                url: `/auth/profile`,
+                method: "GET",
+                credentials: "include",
+            }),
         }),
         updateUserRole: build.mutation<IUser, void>({
-            query: () => ({ url: "/auth/profile/role", credentials: "include" }),
+            query: () => ({
+                url: "/auth/profile/role",
+                credentials: "include",
+            }),
         }),
     }),
     overrideExisting: true,
 });
 
-export const { useSignupMutation, useLoginMutation, useGetUserQuery, useUpdateUserRoleMutation } =
-    authApi;
+export const {
+    useSignupMutation,
+    useLoginMutation,
+    useGetUserQuery,
+    useUpdateUserRoleMutation,
+    useLogoutMutation,
+} = authApi;
 export default authApi;

@@ -17,17 +17,18 @@ const LoginPage = () => {
         loginResult,
     } = useAuth();
 
-    const { isLoading, error, data, isFetching } = useGetUserQuery();
+    const { isLoading, error, data, isFetching } = useGetUserQuery<any>();
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (data?.data.email) {
+    if (!error) {
         return <Navigate to={"/"} replace />;
     }
 
-    let errorMessage: any = loginError && "data" in loginError ? loginError.data : "";
+    let errorMessage: any =
+        loginError && "data" in loginError ? loginError.data : "";
     let emailError = "";
     let passwordError = "";
     if (errorMessage.message?.includes("Email")) {
@@ -48,7 +49,11 @@ const LoginPage = () => {
                                 Stay updated on your professional world
                             </p>
                         </div>
-                        <form className="flex flex-col gap-4" onSubmit={login} method="POST">
+                        <form
+                            className="flex flex-col gap-4"
+                            onSubmit={login}
+                            method="POST"
+                        >
                             <TextInput
                                 name="email"
                                 onChange={handleAuthDetailsChange("login")}
@@ -72,7 +77,9 @@ const LoginPage = () => {
                                 disabled={loginLoading}
                                 placeholder="Password"
                                 errorMessage={passwordError}
-                                rightIcon={showPassword ? <p>Hide</p> : <p>Show</p>}
+                                rightIcon={
+                                    showPassword ? <p>Hide</p> : <p>Show</p>
+                                }
                                 rightIconOnClick={togglePassVisibility}
                             />
                             <div className="mt-1">
@@ -98,7 +105,10 @@ const LoginPage = () => {
                                 <div className="mt-4">
                                     <p className="text-[14px]">
                                         New to JobPost{" "}
-                                        <Link to="/auth/signup" className="text-blue-800 font-bold">
+                                        <Link
+                                            to="/auth/signup"
+                                            className="text-blue-800 font-bold"
+                                        >
                                             Join Now
                                         </Link>
                                     </p>

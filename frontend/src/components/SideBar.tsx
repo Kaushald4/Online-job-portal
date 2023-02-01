@@ -10,14 +10,16 @@ import { useState } from "react";
 import SideBarItem from "./SideBarItem";
 import Button from "./Button";
 import JoinTalentModal from "./Modals/JoinTalentModal";
-import { useGetUserQuery } from "../features/auth/authSlice";
+import { useGetUserQuery, useLogoutMutation } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import useCreateJob from "../hooks/useCreateJob";
 
 const SideBar = () => {
     const [showJoinModal, setShowJoinModal] = useState(false);
+    const [logout, status] = useLogoutMutation();
     const { handleJoin } = useCreateJob();
-    const { data } = useGetUserQuery();
+    const { data, refetch } = useGetUserQuery();
+
     const navigate = useNavigate();
 
     const handlePostJob = () => {
@@ -47,34 +49,46 @@ const SideBar = () => {
                         <SideBarItem
                             to={"/"}
                             title="Jobs"
-                            icon={<IoBriefcaseOutline className="h-full w-full" />}
+                            icon={
+                                <IoBriefcaseOutline className="h-full w-full" />
+                            }
                         />
                         <SideBarItem
                             to={"/profile"}
                             title="Profile"
-                            icon={<IoSparklesOutline className="h-full w-full" />}
+                            icon={
+                                <IoSparklesOutline className="h-full w-full" />
+                            }
                         />
                         <SideBarItem
                             to={"/notification"}
                             title="Notification"
                             badgeCount={9}
-                            icon={<IoNotificationsOutline className="w-full h-full" />}
+                            icon={
+                                <IoNotificationsOutline className="w-full h-full" />
+                            }
                         />
                         <SideBarItem
                             to={"/message"}
                             title="Message"
-                            icon={<IoBriefcaseOutline className="h-full w-full" />}
+                            icon={
+                                <IoBriefcaseOutline className="h-full w-full" />
+                            }
                         />
                         <SideBarItem
                             to={"/my-connections"}
                             title="My Connections"
-                            icon={<HiOutlineUserGroup className="h-full w-full" />}
+                            icon={
+                                <HiOutlineUserGroup className="h-full w-full" />
+                            }
                         />
                         {data?.data.role === "EMPLOYER" && (
                             <SideBarItem
                                 to={"/orginazation"}
                                 title="Your Orginazation"
-                                icon={<HiOutlineUserGroup className="h-full w-full" />}
+                                icon={
+                                    <HiOutlineUserGroup className="h-full w-full" />
+                                }
                             />
                         )}
                         <div className="py-4" />
@@ -84,7 +98,16 @@ const SideBar = () => {
                     </ul>
                 </div>
                 <div className="text-center mx-5 pb-5">
-                    <Button icon={<IoExitOutline className="w-[20px] h-[20px]" />}>Signout</Button>
+                    <Button
+                        onClick={() =>
+                            logout().then((res) => {
+                                refetch();
+                            })
+                        }
+                        icon={<IoExitOutline className="w-[20px] h-[20px]" />}
+                    >
+                        Signout
+                    </Button>
                 </div>
             </aside>
         </>
