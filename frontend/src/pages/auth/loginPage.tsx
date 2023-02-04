@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import TextInput from "../../components/TextInput";
 import { useGetUserQuery } from "../../features/auth/authSlice";
+import Navbar from "../../components/Navbar";
 
 const LoginPage = () => {
     const {
@@ -23,24 +24,36 @@ const LoginPage = () => {
         return <div>Loading...</div>;
     }
 
+    console.log(error, "login page");
     if (!error) {
         return <Navigate to={"/"} replace />;
     }
 
     let errorMessage: any =
-        loginError && "data" in loginError ? loginError.data : "";
+        loginError && "data" in loginError ? (loginError.data as any) : "";
     let emailError = "";
     let passwordError = "";
-    if (errorMessage.message?.includes("Email")) {
+
+    if (errorMessage.message) {
+        for (let key in errorMessage.message) {
+            if (key === "email") {
+                emailError = errorMessage.message[key][0].message;
+            } else if (key === "password") {
+                passwordError = errorMessage.message[key][0].message;
+            }
+        }
+    }
+    if (errorMessage?.message && errorMessage.message.includes("Email")) {
         emailError = errorMessage.message;
-    } else {
+    }
+    if (errorMessage?.message && errorMessage.message.includes("Invalid")) {
         passwordError = errorMessage.message;
     }
-
     return (
         <div className="bg-gray-100 min-h-[100vh] dark:bg-gray-800">
-            <nav className="h-[10vh]"></nav>
-            <div className="shadow-sm max-w-[1240px] mx-auto">
+            {/* <nav className="h-[10vh]"></nav> */}
+            <Navbar userData={data} userError={error} />
+            <div className="shadow-sm max-w-[1240px] flex justify-center items-center h-[70vh] mx-auto">
                 <div className="max-w-[400px] mx-auto">
                     <Card>
                         <div>
@@ -104,7 +117,7 @@ const LoginPage = () => {
                                 <button>Continue with google</button>
                                 <div className="mt-4">
                                     <p className="text-[14px]">
-                                        New to JobPost{" "}
+                                        New to JobPost
                                         <Link
                                             to="/auth/signup"
                                             className="text-blue-800 font-bold"

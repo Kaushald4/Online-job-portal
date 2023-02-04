@@ -51,14 +51,14 @@ const SignupPage = () => {
     }
 
     return (
-        <div className="bg-gray-100 min-h-[100vh] dark:bg-gray-800">
+        <div className="bg-gray-100 min-h-[100vh] dark:bg-gray-800 ">
             <div className="shadow-sm max-w-[1240px] mx-auto">
                 <div className="text-center py-9">
                     <h1 className="text-[29px]">
                         Make the most of your professional life
                     </h1>
                 </div>
-                <div className="max-w-[500px] mx-auto">
+                <div className="max-w-[500px] mx-auto flex justify-center items-center h-[70vh]">
                     <Card>
                         <form
                             className="flex flex-col gap-y-5"
