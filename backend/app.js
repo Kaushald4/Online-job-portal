@@ -14,7 +14,16 @@ const __dirname = path.dirname(__filename);
 //app middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+if (process.env.NODE_ENV === "development") {
+    app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+} else {
+    app.use(
+        cors({
+            origin: ["https://online-job-portal-three.vercel.app"],
+            credentials: true,
+        })
+    );
+}
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));

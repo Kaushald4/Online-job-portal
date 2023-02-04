@@ -48,6 +48,10 @@ const UserSchema = new mongoose.Schema(
             enum: Object.values(UserRole),
             default: UserRole.EMPLOYEE,
         },
+        skills: {
+            type: Array,
+        },
+
         orginazationId: {
             type: ObjectId,
             ref: "Orginazation",
@@ -80,7 +84,10 @@ UserSchema.methods = {
 
     generateForgotPasswordToken: function () {
         const forgotToken = crypto.randomBytes(10).toString("hex");
-        const encryptedForgotToken = crypto.createHash("sha256").update(forgotToken).digest("hex");
+        const encryptedForgotToken = crypto
+            .createHash("sha256")
+            .update(forgotToken)
+            .digest("hex");
         this.forgotPasswordToken = encryptedForgotToken;
         this.forgotPasswordExpDate = new Date(Date.now() + 2 * 60 * 60 * 1000);
         return forgotToken;
@@ -88,7 +95,9 @@ UserSchema.methods = {
 
     passwordChangedAfter: function (jwtTimestamp) {
         if (this.passwordChangedAt) {
-            const changedTimestamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+            const changedTimestamp = Math.floor(
+                this.passwordChangedAt.getTime() / 1000
+            );
             return changedTimestamp > jwtTimestamp;
         }
         return false;
